@@ -1,0 +1,10 @@
+services:
+    bucket:
+        build: .
+        ports:
+          - "6060:8000"
+        volumes:
+            - ../:/app/
+        restart: always
+        tty: true
+        container_name: "bucket"
