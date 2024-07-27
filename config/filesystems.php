@@ -56,6 +56,17 @@ return [
             'throw' => false,
         ],
 
+        'gcs' => [
+            'driver' => 'gcs',
+            'project_id' => env('GOOGLE_CLOUD_PROJECT_ID'),
+            'key_file' => env('GOOGLE_APPLICATION_CREDENTIALS'), // Path to the JSON key file
+            'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET'),
+            'path_prefix' => null, // Optional: /default/path/to/apply/in/bucket
+            'storage_api_uri' => env('GOOGLE_CLOUD_STORAGE_API_URI'), // Optional: custom API endpoint
+            'visibility' => 'public', // Optional: public or private
+        ], 
+    
+
     ],
 
     /*
