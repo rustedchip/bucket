@@ -20,6 +20,9 @@ class BucketController extends Controller
 
     public function upload(Request $request, $path)
     {
+
+        $path = str_replace("-", "/", $path);
+
         try {
           
             $request->validate([
@@ -41,6 +44,8 @@ class BucketController extends Controller
 
     public function download($file,$path)
     {
+        $path = str_replace("-", "/", $path);
+
         try {
             $filePath = $path.'/'. $file;
 
@@ -61,6 +66,8 @@ class BucketController extends Controller
     }
     public function files($path)
     {
+        $path = str_replace("-", "/", $path);
+
 
         try {
            
@@ -75,6 +82,8 @@ class BucketController extends Controller
 
     public function delete($file, $path)
     {
+        $path = str_replace("-", "/", $path);
+
         try {
             $filePath = $path.'/' . $file;
             $deleted = $this->googleCloudStorageService->deleteFile($filePath);
