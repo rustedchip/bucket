@@ -18,7 +18,7 @@ class BucketController extends Controller
     }
 
 
-    public function upload(Request $request)
+    public function upload(Request $request, $path)
     {
         try {
           
@@ -27,7 +27,7 @@ class BucketController extends Controller
             ]);
 
             $file = $request->file('file');
-            $filePath = 'uploads/' . $file->getClientOriginalName();
+            $filePath = $path.'/' . $file->getClientOriginalName();
 
             $this->googleCloudStorageService->uploadFile($filePath, file_get_contents($file));
 
@@ -39,10 +39,10 @@ class BucketController extends Controller
     }
 
 
-    public function download($file)
+    public function download($file,$path)
     {
         try {
-            $filePath = 'uploads/' . $file;
+            $filePath = $path.'/'. $file;
 
             $fileStream = $this->googleCloudStorageService->downloadFile($filePath);
 
@@ -59,12 +59,12 @@ class BucketController extends Controller
             return response()->json(['error' => 'file-download-failed'], 500);
         }
     }
-    public function files()
+    public function files($path)
     {
 
         try {
            
-            $files = $this->googleCloudStorageService->listFiles('uploads/');
+            $files = $this->googleCloudStorageService->listFiles($path.'/');
 
             return response()->json($files, 200);
         } catch (Exception $e) {
@@ -73,10 +73,10 @@ class BucketController extends Controller
         }
     }
 
-    public function delete($file)
+    public function delete($file, $path)
     {
         try {
-            $filePath = 'uploads/' . $file;
+            $filePath = $path.'/' . $file;
             $deleted = $this->googleCloudStorageService->deleteFile($filePath);
 
             if ($deleted) {
