@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BucketController;
 use App\Http\Middleware\BucketAuth;
 
-
 Route::get('/', function () {
     return response()->json(['message' => 'ok'], 200);
 });
