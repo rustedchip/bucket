@@ -17,7 +17,6 @@ return Application::configure(basePath: dirname(__DIR__))
             'bucket/*',
         ]);
         $middleware->append(BucketAuth::class);
-        $middleware->append(CorsMiddleware::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
