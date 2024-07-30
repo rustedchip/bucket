@@ -34,10 +34,10 @@ class BucketController extends Controller
 
             $this->googleCloudStorageService->uploadFile($filePath, file_get_contents($file));
 
-            return response()->json(['message' => 'file-uploaded-successfully'], 200);
+            return response()->json(['message' => 'file-uploaded-successfully','success'=> true,], 200);
         } catch (Exception $e) {
             Log::error('file-upload-failed :: ' . $e->getMessage());
-            return response()->json(['error' => 'file-upload-failed'], 500);
+            return response()->json(['error' => 'file-upload-failed','success'=> false], 500);
         }
     }
 
@@ -58,10 +58,10 @@ class BucketController extends Controller
                 ]);
             }
 
-            return response()->json(['message' => 'file-not-found'], 404);
+            return response()->json(['message' => 'file-not-found','success'=> false], 404);
         } catch (Exception $e) {
             Log::error('file-download-failed :: ' . $e->getMessage());
-            return response()->json(['error' => 'file-download-failed'], 500);
+            return response()->json(['error' => 'file-download-failed','success'=> false], 500);
         }
     }
     public function files($path)
@@ -76,7 +76,7 @@ class BucketController extends Controller
             return response()->json($files, 200);
         } catch (Exception $e) {
             Log::error('file-listing-failed: ' . $e->getMessage());
-            return response()->json(['error' => 'file-listing-failed'], 500);
+            return response()->json(['error' => 'file-listing-failed','success'=> false], 500);
         }
     }
 
@@ -89,13 +89,13 @@ class BucketController extends Controller
             $deleted = $this->googleCloudStorageService->deleteFile($filePath);
 
             if ($deleted) {
-                return response()->json(['message' => 'file-deleted-successfully'], 200);
+                return response()->json(['message' => 'file-deleted-successfully','success'=> true,], 200);
             } else {
-                return response()->json(['message' => 'file-not-found'], 404);
+                return response()->json(['message' => 'file-not-found','success'=> false,], 404);
             }
         } catch (Exception $e) {
             Log::error('File deletion failed: ' . $e->getMessage());
-            return response()->json(['error' => 'file-deletion-failed'], 500);
+            return response()->json(['error' => 'file-deletion-failed','success'=> false], 500);
         }
     }
 }
