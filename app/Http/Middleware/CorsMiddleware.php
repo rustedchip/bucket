@@ -15,19 +15,18 @@ class CorsMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $allowedOrigins = [env('FRONTEND_A'),env('FRONTEND_B'),env('FRONTEND_C'),env('FRONTEND_D') ];
+        $allowedOrigins = [env('ENDPOINT_A'), env('ENDPOINT_B'), env('ENDPOINT_C'), env('ENDPOINT_D')];
 
-        if($request->server('HTTP_ORIGIN')){
-            if (in_array($request->getHttpHost(), $allowedOrigins)) {
-              return $next($request)
-                  ->header('Access-Control-Allow-Origin', $request->getHttpHost())
-                  ->header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE')
-                  ->header('Access-Control-Allow-Headers', '*');
-          }
+        $origin = $request->headers->get('origin');
+
+        if (in_array($origin, $allowedOrigins)) {
+            return $next($request)
+                ->header('Access-Control-Allow-Origin', $origin)
+                ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+                ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+                ->header('Access-Control-Allow-Credentials', 'true');
         }
 
         return $next($request);
-     
     }
-      
 }
