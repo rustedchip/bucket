@@ -9,6 +9,7 @@ RUN docker-php-ext-install pdo pdo_mysql
 COPY --from=build /app /var/www/
 COPY cloud-run-files/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY cloud-run-files/.env.cloud-run /app/.env
+COPY cloud-run-files/php.ini /usr/local/etc/php/php.ini
 
 RUN chmod 777 -R /var/www/storage/ && \
     chown -R www-data:www-data /var/www/ && \

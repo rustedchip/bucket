@@ -5,6 +5,7 @@ services:
           - "6060:8000"
         volumes:
             - ../:/app/
+            - ./php.ini/:/usr/local/etc/php/php.ini
         restart: always
         tty: true
         container_name: "bucket"
