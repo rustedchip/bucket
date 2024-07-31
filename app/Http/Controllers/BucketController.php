@@ -18,7 +18,7 @@ class BucketController extends Controller
     }
 
 
-    public function upload(Request $request, $path, $filename)
+    public function upload(Request $request, $path)
     {
 
         $path = str_replace("-", "/", $path);
@@ -32,8 +32,9 @@ class BucketController extends Controller
            
             $file = $request->file('file');
            
-            if(isset($filename)){
-                $filePath = $path.'/'.$filename.'.'.$file->getClientOriginalExtension();
+            if(isset($request->filename)){
+
+                $filePath = $path.'/'.$request->filename.'.'.$file->getClientOriginalExtension();
 
             }else{
                 $filePath = $path.'/' . $file->getClientOriginalName();
