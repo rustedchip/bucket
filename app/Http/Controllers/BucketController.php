@@ -18,7 +18,7 @@ class BucketController extends Controller
     }
 
 
-    public function upload(Request $request, $path)
+    public function upload(Request $request, $path, $filename)
     {
 
         $path = str_replace("-", "/", $path);
@@ -29,8 +29,16 @@ class BucketController extends Controller
                 'file' => 'required|file',
             ]);
 
+           
             $file = $request->file('file');
-            $filePath = $path.'/' . $file->getClientOriginalName();
+           
+            if(isset($filename)){
+                $filePath = $path.'/'.$filename.'.'.$file->getClientOriginalExtension();
+
+            }else{
+                $filePath = $path.'/' . $file->getClientOriginalName();
+            }
+            
 
             $this->googleCloudStorageService->uploadFile($filePath, file_get_contents($file));
 
