@@ -36,10 +36,19 @@ class BucketController extends Controller
            
             if(isset($request->filename)){
 
-                $filePath = $path.'/'.$request->filename.'.'.$file->getClientOriginalExtension();
+                $filename = $request->filename;
+                $filename  = str_replace("-", "_", $filename );
+
+
+                $filePath = $path.'/'.$filename.'.'.$file->getClientOriginalExtension();
 
             }else{
-                $filePath = $path.'/' . $file->getClientOriginalName();
+
+                $filename = $file->getClientOriginalName();
+                $filename  = str_replace("-", "_", $filename );
+
+                
+                $filePath = $path.'/' . $filename;
             }
             
 
