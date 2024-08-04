@@ -89,10 +89,8 @@ class BucketController extends Controller
         }
     }
 
-    public function delete(Request $request)
+    public function delete(Request $request,$path)
     {
-
-        $path = $request->path;
 
         $path = str_replace("-", "/", $path);
 
@@ -107,7 +105,7 @@ class BucketController extends Controller
             }
         } catch (Exception $e) {
             Log::error('File deletion failed: ' . $e->getMessage());
-            return response()->json(['error' => 'file-deletion-failed','success'=> false], 500);
+            return response()->json(['error' => 'file-deletion-failed'.$request['path'],'success'=> false], 500);
         }
     }
 }

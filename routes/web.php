@@ -12,4 +12,4 @@ Route::get('/', function () {
 Route::post('bucket/upload/{path}', [BucketController::class, 'upload'])->middleware(BucketAuth::class);
 Route::get('bucket/download/{file}/{path}', [BucketController::class, 'download'])->middleware(BucketAuth::class);
 Route::get('bucket/files/{path}', [BucketController::class, 'files'])->middleware(BucketAuth::class);
-Route::delete('bucket/delete', [BucketController::class, 'delete'])->middleware(BucketAuth::class);
+Route::delete('bucket/delete/{path}', [BucketController::class, 'delete'])->middleware(BucketAuth::class);
