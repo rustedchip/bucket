@@ -23,6 +23,8 @@ class BucketController extends Controller
 
         $path = str_replace("-", "/", $path);
 
+        $path = str_replace(' ', '_', $path);
+
         try {
           
             $request->validate([
