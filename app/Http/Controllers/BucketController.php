@@ -89,13 +89,16 @@ class BucketController extends Controller
         }
     }
 
-    public function delete($file, $path)
+    public function delete(Request $request)
     {
+
+        $path = $request->path;
+
         $path = str_replace("-", "/", $path);
 
         try {
-            $filePath = $path.'/' . $file;
-            $deleted = $this->googleCloudStorageService->deleteFile($filePath);
+          
+            $deleted = $this->googleCloudStorageService->deleteFile($path);
 
             if ($deleted) {
                 return response()->json(['message' => 'file-deleted-successfully','success'=> true,], 200);
