@@ -70,7 +70,7 @@ class BucketController extends Controller
     
             if ($fileData) {
                 return Response::make($fileData['stream'], 200, [
-                    'Content-Type' => $fileData['mimeType'], // Use the MIME type from the service
+                    'Content-Type' => $fileData['mimeType'], 
                     'Content-Disposition' => 'attachment; filename="' . $file . '"',
                 ]);
             }

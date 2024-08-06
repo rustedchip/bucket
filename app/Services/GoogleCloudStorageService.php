@@ -34,7 +34,7 @@ class GoogleCloudStorageService
 
         if ($object->exists()) {
             $stream = $object->downloadAsStream();
-            $mimeType = $object->info()['contentType']; // Get the MIME type from Google Cloud Storage
+            $mimeType = $object->info()['contentType']; 
     
             return ['stream' => $stream, 'mimeType' => $mimeType];
         }
