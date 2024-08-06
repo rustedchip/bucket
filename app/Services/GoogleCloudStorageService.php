@@ -33,9 +33,12 @@ class GoogleCloudStorageService
         $object = $this->bucket->object($filePath);
 
         if ($object->exists()) {
-            return $object->downloadAsStream();
+            $stream = $object->downloadAsStream();
+            $mimeType = $object->info()['contentType']; // Get the MIME type from Google Cloud Storage
+    
+            return ['stream' => $stream, 'mimeType' => $mimeType];
         }
-
+    
         return null;
     }
     public function listFiles($prefix)

@@ -66,43 +66,19 @@ class BucketController extends Controller
         $path = str_replace("-", "/", $path);
 
         try {
-            $fileStream = $this->googleCloudStorageService->downloadFile($path . '/' . $file);
-
-            if ($fileStream) {
-                $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-                $mimeType = 'application/octet-stream'; 
-                switch ($extension) {
-                    case 'jpg':
-                    case 'jpeg':
-                        $mimeType = 'image/jpeg';
-                        break;
-                    case 'png':
-                        $mimeType = 'image/png';
-                        break;
-                    case 'gif':
-                        $mimeType = 'image/gif';
-                        break;
-                    case 'pdf':
-                        $mimeType = 'application/pdf';
-                        break;
-                    case 'txt':
-                        $mimeType = 'text/plain';
-                        break;
-                    case 'json':
-                        $mimeType = 'application/json';
-                        break;
-                }
-
-                return Response::make($fileStream, 200, [
-                    'Content-Type' => $mimeType,
-                    'Content-Disposition' => 'inline; filename="' . $file . '"',
+            $fileData = $this->googleCloudStorageService->downloadFile($path . '/' . $file);
+    
+            if ($fileData) {
+                return Response::make($fileData['stream'], 200, [
+                    'Content-Type' => $fileData['mimeType'], // Use the MIME type from the service
+                    'Content-Disposition' => 'attachment; filename="' . $file . '"',
                 ]);
             }
-
-            return response()->json(['message' => 'file-not-found', 'success' => false], 404);
+    
+            return response()->json(['message' => 'file-not-found', 'success'=> false], 404);
         } catch (Exception $e) {
             Log::error('file-download-failed :: ' . $e->getMessage());
-            return response()->json(['error' => 'file-download-failed', 'success' => false], 500);
+            return response()->json(['error' => 'file-download-failed', 'success'=> false], 500);
         }
     }
 
