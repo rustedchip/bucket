@@ -61,17 +61,19 @@ class BucketController extends Controller
     }
 
 
-    public function download($path, $file)
+    public function download($path)
     {
         $path = str_replace("-", "/", $path);
 
+        $fileName = basename($path);
+
         try {
-            $fileData = $this->googleCloudStorageService->downloadFile($path . '/' . $file);
+            $fileData = $this->googleCloudStorageService->downloadFile($path);
     
             if ($fileData) {
                 return Response::make($fileData['stream'], 200, [
                     'Content-Type' => $fileData['mimeType'], 
-                    'Content-Disposition' => 'attachment; filename="' . $file . '"',
+                    'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
                 ]);
             }
     
