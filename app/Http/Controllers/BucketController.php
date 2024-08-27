@@ -22,8 +22,8 @@ class BucketController extends Controller
     {
 
         $path = str_replace("-", "/", $path);
-
         $path = str_replace(' ', '_', $path);
+        $path = str_replace('%', '_', $path);
 
         try {
 
@@ -44,7 +44,12 @@ class BucketController extends Controller
             } else {
 
                 $filename =  time() . '_' . $file->getClientOriginalName();
+                
                 $filename  = str_replace("-", "_", $filename);
+                $filename  = str_replace(' ', '_', $path);
+                $filename  = str_replace('%', '_', $path);
+
+                
                 $filePath = $path . '/' . $filename;
             }
 
