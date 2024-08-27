@@ -43,10 +43,8 @@ class BucketController extends Controller
                 $filePath = $path . '/' . $filename . '.' . $file->getClientOriginalExtension();
             } else {
 
-                $filename = $file->getClientOriginalName();
+                $filename =  time() . '_' . $file->getClientOriginalName();
                 $filename  = str_replace("-", "_", $filename);
-
-
                 $filePath = $path . '/' . $filename;
             }
 
