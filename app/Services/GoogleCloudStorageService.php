@@ -34,11 +34,11 @@ class GoogleCloudStorageService
 
         if ($object->exists()) {
             $stream = $object->downloadAsStream();
-            $mimeType = $object->info()['contentType']; 
-    
+            $mimeType = $object->info()['contentType'];
+
             return ['stream' => $stream, 'mimeType' => $mimeType];
         }
-    
+
         return null;
     }
     public function listFiles($prefix)
@@ -63,8 +63,29 @@ class GoogleCloudStorageService
             $object->delete();
             return true;
         }
-    
+
         return false;
-        
+    }
+
+    public function getFileMetadata(string $path): ?array
+    {
+        try {
+
+            $object = $this->bucket->object($path);
+            if (!$object->exists()) {
+                return null;
+            }
+
+            $info = $object->info();
+
+            return [
+                'size' => (int) ($info['size'] ?? 0),
+                'mimeType' => $info['contentType'] ?? 'application/octet-stream',
+                'createdAt' => $info['timeCreated'] ?? null, // This is an RFC3339 string
+            ];
+        } catch (Exception $e) {
+            Log::error('getFileMetadata failed for path: ' . $path . ' :: ' . $e->getMessage());
+            return null;
+        }
     }
 }

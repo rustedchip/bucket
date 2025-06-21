@@ -1,5 +1,5 @@
 services:
-    bucket:
+    bucket-dev:
         build: .
         ports:
           - "6060:8000"
@@ -8,4 +8,4 @@ services:
             - ./php.ini/:/usr/local/etc/php/php.ini
         restart: always
         tty: true
-        container_name: "bucket"
+        container_name: "bucket-dev"

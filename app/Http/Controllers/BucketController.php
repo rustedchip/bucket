@@ -68,18 +68,18 @@ class BucketController extends Controller
 
         try {
             $fileData = $this->googleCloudStorageService->downloadFile($path);
-    
+
             if ($fileData) {
                 return Response::make($fileData['stream'], 200, [
-                    'Content-Type' => $fileData['mimeType'], 
+                    'Content-Type' => $fileData['mimeType'],
                     'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
                 ]);
             }
-    
-            return response()->json(['message' => 'file-not-found', 'success'=> false], 404);
+
+            return response()->json(['message' => 'file-not-found', 'success' => false], 404);
         } catch (Exception $e) {
             Log::error('file-download-failed :: ' . $e->getMessage());
-            return response()->json(['error' => 'file-download-failed', 'success'=> false], 500);
+            return response()->json(['error' => 'file-download-failed', 'success' => false], 500);
         }
     }
 
@@ -116,6 +116,38 @@ class BucketController extends Controller
         } catch (Exception $e) {
             Log::error('File deletion failed: ' . $e->getMessage());
             return response()->json(['error' => 'file-deletion-failed' . $request['path'], 'success' => false], 500);
+        }
+    }
+
+    public function verify($path)
+    {
+        $path = str_replace("-", "/", $path);
+
+        try {
+            $fileMeta = $this->googleCloudStorageService->getFileMetadata($path);
+
+            if ($fileMeta) {
+                return response()->json([
+                    'success' => true,
+                    'exists' => true,
+                    'filename' => basename($path),
+                    'size' => $fileMeta['size'],            // in bytes
+                    'mimeType' => $fileMeta['mimeType'],    // e.g., application/pdf
+                    'createdAt' => $fileMeta['createdAt'],  // ISO 8601 preferred
+                ]);
+            }
+
+            return response()->json([
+                'success' => false,
+                'exists' => false,
+                'message' => 'file-not-found'
+            ], 404);
+        } catch (Exception $e) {
+            Log::error('file-verification-failed :: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'error' => 'file-verification-failed',
+            ], 500);
         }
     }
 }
