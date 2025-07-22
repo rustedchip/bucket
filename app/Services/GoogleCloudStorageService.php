@@ -11,11 +11,15 @@ class GoogleCloudStorageService
 
     public function __construct()
     {
-        $this->storageClient = new StorageClient([
+        $options = [
             'projectId' => env('GOOGLE_CLOUD_PROJECT_ID'),
-            'keyFilePath' => env('GOOGLE_APPLICATION_CREDENTIALS'),
-        ]);
+        ];
 
+        if (!empty(env('GOOGLE_APPLICATION_CREDENTIALS'))) {
+            $options['keyFilePath'] = env('GOOGLE_APPLICATION_CREDENTIALS');
+        }
+
+        $this->storageClient = new StorageClient($options);
         $this->bucket = $this->storageClient->bucket(env('GOOGLE_CLOUD_STORAGE_BUCKET'));
     }
 
